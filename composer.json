@@ -1,0 +1,13 @@
+{
+  "name": "brando20/328/diner",
+  "authors": [
+    {
+      "name": "Brandon Viorato",
+      "email": "viorato.brandon@student.greenriver.edu"
+    }
+  ],
+  "require":
+  {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}

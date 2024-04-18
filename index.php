@@ -64,12 +64,21 @@ $f3->route('GET|POST /Order1', function($f3) {
         $meal = $_POST['meal'];
 
         // if the data valid
-        if (true) {
+        if (!empty($food) && !empty($meal)) {
+            // add data to session array
             $f3->set('SESSION.food', $food);
             $f3->set('SESSION.meal', $meal);
+
+            // send user to next form
+            $f3->reroute('order2');
+        }
+        else {
+            // temporary
+            echo "<p>Validation errors</p>";
         }
 
-    } else {
+    }
+    else {
         echo "<p>You got here using the GET method</p>";
     }
 
@@ -79,8 +88,28 @@ $f3->route('GET|POST /Order1', function($f3) {
 });
 
 // Order 2
-$f3->route('GET /Order2', function() {
-    //echo '<h1>Order 2</h1>';
+$f3->route('GET|POST /Order2', function($f3) {
+
+    var_dump($f3->get('SESSION'));
+
+    // If the form has been posted
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+
+        // Get the data from the post array
+        $condiments = $_POST['conds'];
+
+        // if the data valid
+        if (true) {
+            // add data to session array
+            $f3->set('SESSION.condiments', $condiments);
+
+            // send user to next form
+            $f3->reroute('summary');
+        } else {
+            // temporary
+            echo "<p>Validation errors</p>";
+        }
+    }
 
     // render a view page
     $view = new Template();

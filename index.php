@@ -96,7 +96,12 @@ $f3->route('GET|POST /Order2', function($f3) {
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         // Get the data from the post array
-        $condiments = $_POST['conds'];
+        if (isset($_POST['conds'])) {
+            $condiments = implode(", ", $_POST['conds']);
+        }
+        else {
+            $condiments = "None selected";
+        }
 
         // if the data valid
         if (true) {
@@ -114,6 +119,16 @@ $f3->route('GET|POST /Order2', function($f3) {
     // render a view page
     $view = new Template();
     echo $view->render('views/order2.html');
+});
+
+// Order summary
+$f3->route('GET /summary', function($f3) {
+
+    var_dump($f3->get('SESSION'));
+
+    // render a view page
+    $view = new Template();
+    echo $view->render('views/order-summary.html');
 });
 
 // run fat-free

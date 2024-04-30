@@ -7,8 +7,15 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// require
+// require the necessary files
 require_once('vendor/autoload.php');
+require_once('model/data-layer.php');
+require_once ('model/validate.php');
+
+//$testFood = '     xy     ';
+//echo validFood($testFood) ? "valid": "not valid";
+//var_dump(validFood($testFood));
+//var_dump(getMeals());
 
 // instantiate the base F3 class
 $f3 = Base::instance();
@@ -52,35 +59,43 @@ $f3->route('GET /menus/dinner', function() {
 // Order 1
 $f3->route('GET|POST /Order1', function($f3) {
     //echo '<h1>Order 1</h1>';
+    $food = '';
+    $meal = '';
 
     // If the form has been posted
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
-//        echo "<p>You got here using the POST method</p>";
-//        var_dump($_POST);
-
         // Get the data from the post array
-        $food = $_POST['food'];
-        $meal = $_POST['meal'];
-
-        // if the data valid
-        if (!empty($food) && !empty($meal)) {
-            // add data to session array
-            $f3->set('SESSION.food', $food);
-            $f3->set('SESSION.meal', $meal);
-
-            // send user to next form
-            $f3->reroute('order2');
+        if (validFood($_POST['food'])) {
+            $food = $_POST['food'];
         }
         else {
-            // temporary
-            echo "<p>Validation errors</p>";
+            $f3->set('errors["food"]', 'Please enter a food');
         }
 
+        if (isset($_POST['meal']) and validMeal($_POST['meal'])) {
+            $meal = $_POST['meal'];
+        }
+        else {
+            $f3->set('errors["meal"]', 'Please select a meal');
+        }
+
+        // add data to session array
+        $f3->set('SESSION.food', $food);
+        $f3->set('SESSION.meal', $meal);
+
+        // If there are no errors,
+        // send the user to next form
+        if (empty($f3->get('errors'))) {
+            $f3->reroute('order2');
+        }
     }
-    else {
-        echo "<p>You got here using the GET method</p>";
-    }
+
+    // Get the data from the model
+    // and add it to the F3 hive
+    $meals = getMeals();
+    $f3->set('meals', $meals);
+
 
     // render a view page
     $view = new Template();
@@ -115,6 +130,11 @@ $f3->route('GET|POST /Order2', function($f3) {
             echo "<p>Validation errors</p>";
         }
     }
+
+    // Get the data from the model
+    // and add it to the F3 hive
+    $condiments = getCondiments();
+    $f3->set('condiments', $condiments);
 
     // render a view page
     $view = new Template();

@@ -9,6 +9,7 @@ error_reporting(E_ALL);
 
 // require the necessary files
 require_once('vendor/autoload.php');
+require_once('controllers/controller.php');
 
 //if (Validate::validFood("tacos")) {
 //    echo "<p>This is valid</p>";
@@ -35,14 +36,11 @@ require_once('vendor/autoload.php');
 
 // instantiate the base F3 class
 $f3 = Base::instance();
+$con = new Controller($f3);
 
 // define a default route
 $f3->route('GET /', function() {
-    //echo '<h1>Hello diner</h1>';
-
-    // render a view page
-    $view = new Template();
-    echo $view->render('views/home-page.html');
+    $GLOBALS['con']->home();
 });
 
 // Breakfast menu
@@ -65,11 +63,7 @@ $f3->route('GET /menus/lunch', function() {
 
 // Dinner menu
 $f3->route('GET /menus/dinner', function() {
-    //echo '<h1>My lunch menu</h1>';
 
-    // render a view page
-    $view = new Template();
-    echo $view->render('views/dinner-menu.html');
 });
 
 // Order 1

@@ -3,12 +3,16 @@
 /* This is my data layer.
  * It belongs to the Model
  */
+class DataLayer
+{
+    // Get the meal for Diner app
+    static function getMeals()
+    {
+        return array('breakfast', 'lunch', 'dinner', 'dessert');
+    }
 
-// Get the meal for Diner app
-function getMeals() {
-    return array('breakfast', 'lunch', 'dinner', 'dessert');
-}
-
-function getCondiments() {
-    return array('ketchup', 'mustard', 'sriracha', 'ranch');
+    static function getCondiments()
+    {
+        return array('ketchup', 'mustard', 'sriracha', 'ranch');
+    }
 }

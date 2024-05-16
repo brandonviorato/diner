@@ -9,7 +9,6 @@ error_reporting(E_ALL);
 
 // require the necessary files
 require_once('vendor/autoload.php');
-require_once('controllers/controller.php');
 
 //if (Validate::validFood("tacos")) {
 //    echo "<p>This is valid</p>";
@@ -45,110 +44,31 @@ $f3->route('GET /', function() {
 
 // Breakfast menu
 $f3->route('GET /menus/breakfast', function() {
-    //echo '<h1>My breakfast menu</h1>';
-
-    // render a view page
-    $view = new Template();
-    echo $view->render('views/breakfast-menu.html');
+    $GLOBALS['con']->breakfast();
 });
 
 // Breakfast menu
 $f3->route('GET /menus/lunch', function() {
-    //echo '<h1>My lunch menu</h1>';
-
-    // render a view page
-    $view = new Template();
-    echo $view->render('views/lunch-menu.html');
+    $GLOBALS['con']->lunch();
 });
 
 // Dinner menu
 $f3->route('GET /menus/dinner', function() {
-
-});
-
-// Order 1
-$f3->route('GET|POST /Order1', function($f3) {
-    //echo '<h1>Order 1</h1>';
-    $food = '';
-    $meal = '';
-
-    // If the form has been posted
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
-        // Get the data from the post array
-        if (Validate::validFood($_POST['food'])) {
-            $food = $_POST['food'];
-        }
-        else {
-            $f3->set('errors["food"]', 'Please enter a food');
-        }
-
-        if (isset($_POST['meal']) and Validate::validMeal($_POST['meal'])) {
-            $meal = $_POST['meal'];
-        }
-        else {
-            $f3->set('errors["meal"]', 'Please select a meal');
-        }
-
-        // add the data to session array
-        $order = new Order($food, $meal);
-        $f3->set('SESSION.order', $order);
-
-        // If there are no errors,
-        // send the user to next form
-        if (empty($f3->get('errors'))) {
-            $f3->reroute('order2');
-        }
-    }
-
-    // Get the data from the model
-    // and add it to the F3 hive
-    $meals = DataLayer::getMeals();
-    $f3->set('meals', $meals);
-
+    //echo '<h1>My dinner menu</h1>';
 
     // render a view page
     $view = new Template();
-    echo $view->render('views/order1.html');
+    echo $view->render('views/dinner-menu.html');
+});
+
+// Order 1
+$f3->route('GET|POST /Order1', function() {
+    $GLOBALS['con']->order1();
 });
 
 // Order 2
 $f3->route('GET|POST /Order2', function($f3) {
-
-    var_dump($f3->get('SESSION'));
-
-    // If the form has been posted
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-
-        // Get the data from the post array
-        if (isset($_POST['conds'])) {
-            $condiments = implode(", ", $_POST['conds']);
-        }
-        else {
-            $condiments = "None selected";
-        }
-
-        // if the data valid
-        if (true) {
-            // add data to session array
-            $f3->get('SESSION.order')->setCondiments($condiments);
-
-            // send user to next form
-            $f3->reroute('summary');
-        } else {
-            // temporary
-            echo "<p>Validation errors</p>";
-        }
-    }
-
-    // Get the data from the model
-    // and add it to the F3 hive
-    $condiments = DataLayer::getCondiments();
-    $f3->set('condiments', $condiments);
-
-    // render a view page
-    $view = new Template();
-    echo $view->render('views/order2.html');
+    $GLOBALS['con']->order2();
 });
 
 // Order summary

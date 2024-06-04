@@ -15,6 +15,10 @@ $f3 = Base::instance();
 $con = new Controller($f3);
 $dataLayer = new DataLayer();
 
+//$orders = $dataLayer->getOrders();
+//$f3->set('orders', $orders);
+//var_dump($orders);
+
 //$myOrder = new Order('breakfast', 'pancakes', 'maple syrup');
 //$id = $dataLayer->saveOrder($myOrder);
 //echo "Order $id inserted successfully!";
@@ -56,6 +60,11 @@ $f3->route('GET|POST /Order2', function($f3) {
 // Order summary
 $f3->route('GET /summary', function($f3) {
     $GLOBALS['con']->summary();
+});
+
+// Admin
+$f3->route('GET /admin', function($f3) {
+    $GLOBALS['con']->admin();
 });
 
 // run fat-free

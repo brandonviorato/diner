@@ -1,0 +1,14 @@
+<!-- diner/views/order-summary.html -->
+<include href="views/header.html"></include>
+
+<body>
+<div class="container">
+    <h1>Orders</h1>
+    <repeat group="{{ @orders }}" value="{{ @order }}">
+        <p>{{ @order.order_id }}</p>
+    </repeat>
+
+    <a href="{{ @BASE }}">Home page</a>
+</div>
+</body>
+</html>

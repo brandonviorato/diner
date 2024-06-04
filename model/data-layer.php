@@ -58,6 +58,29 @@ class DataLayer
         return $id;
     }
 
+    /**
+     * Get the orders from the database
+     * @return $result Assoc array of orders
+     */
+    function getOrders()
+    {
+        // Define the query
+        $sql = "SELECT order_id, food, meal, condiments, date_time FROM orders";
+
+        // 2. Prepare the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        // 3. Execute the query
+        $statement->execute();
+
+        // 4. Process the result
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+//        foreach ($result as $row) {
+//            echo "<p>" . $row['order_id'] . ", " . $row['food'] . ", " . $row['meal'] . ", " . $row['condiments'] . ", " . $row['date_time'] ."</p>";
+//        }
+    }
+
     // Get the meal for Diner app
     static function getMeals()
     {

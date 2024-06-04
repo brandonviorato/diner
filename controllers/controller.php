@@ -116,4 +116,21 @@ class Controller
         $view = new Template();
         echo $view->render('views/order2.html');
     }
+
+    function summary()
+    {
+        // write data to database
+        $order = $this->_f3->get('SESSION.order');
+        $id = $GLOBALS['dataLayer']->saveOrder($order);
+        // add id to f3 hive
+        $this->_f3->set('id', $id);
+        //echo "Order $id inserted successfully!";
+
+        // render a view page
+        $view = new Template();
+        echo $view->render('views/order-summary.html');
+
+        //var_dump($f3->get('SESSION'));
+        session_destroy();
+    }
 }

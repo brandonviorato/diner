@@ -3,7 +3,8 @@
 
 <body>
 <div class="container">
-    <h1>Thank you for ordering {{ @SESSION.order->getFood() }} for {{ @SESSION.order->getMeal() }}!</h1>
+    <h1>Order {{ @id }} successfully placed!</h1>
+    <h2>Thank you for ordering {{ @SESSION.order->getFood() }} for {{ @SESSION.order->getMeal() }}!</h2>
     <p>Condiments: {{ @SESSION.order->getCondiments() }}</p>
 
     <a href="order1">Place another order</a><br>

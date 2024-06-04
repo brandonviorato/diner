@@ -10,32 +10,14 @@ error_reporting(E_ALL);
 // require the necessary files
 require_once('vendor/autoload.php');
 
-//if (Validate::validFood("tacos")) {
-//    echo "<p>This is valid</p>";
-//}
-
-/* test the datalayer class */
-//var_dump(DataLayer::getMeals());
-
-
-/* Test the Order class */
-//$order = new Order('pad thai', 'lunch', ['soy sauce']);
-//var_dump($order);
-//$order2 = new Order();
-//$order2->setFood('nachos');
-//$order2->setMeal('dinner');
-//$order2->setCondiments(['salsa', 'guacamole']);
-//var_dump($order2);
-//echo '</pre>';
-
-//$testFood = '     xy     ';
-//echo validFood($testFood) ? "valid": "not valid";
-//var_dump(validFood($testFood));
-//var_dump(getMeals());
-
 // instantiate the base F3 class
 $f3 = Base::instance();
 $con = new Controller($f3);
+$dataLayer = new DataLayer();
+
+//$myOrder = new Order('breakfast', 'pancakes', 'maple syrup');
+//$id = $dataLayer->saveOrder($myOrder);
+//echo "Order $id inserted successfully!";
 
 // define a default route
 $f3->route('GET /', function() {
@@ -73,13 +55,7 @@ $f3->route('GET|POST /Order2', function($f3) {
 
 // Order summary
 $f3->route('GET /summary', function($f3) {
-
-    // render a view page
-    $view = new Template();
-    echo $view->render('views/order-summary.html');
-
-    //var_dump($f3->get('SESSION'));
-    session_destroy();
+    $GLOBALS['con']->summary();
 });
 
 // run fat-free
